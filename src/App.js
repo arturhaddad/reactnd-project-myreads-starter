@@ -7,20 +7,23 @@ import Book from "./components/Book";
 class BooksApp extends React.Component {
   state = {
     books: [],
-    loading: false
   };
 
-  getBooks = async () => {
-    try {
-      const books = await BooksAPI.getAll();
-      this.setState({ books });
-    } catch (err) {
-      console.log(err);
-    }
+  loadBooks = () => {
+    BooksAPI.getAll().then(books => this.setState({ books }));
+  };
+
+  handleShelfChange = (book, shelf) => {
+    BooksAPI.update(book, shelf).then(() => {
+      book.shelf = shelf;
+      this.setState(state => ({
+        books: state.books.filter(b => b.id !== book.id).concat(book)
+      }));
+    });
   };
 
   componentDidMount() {
-    this.getBooks();
+    this.loadBooks();
   }
 
   render() {
@@ -69,10 +72,8 @@ class BooksApp extends React.Component {
                         .map(book => (
                           <Book
                             key={book.id}
-                            title={book.title}
-                            image={book.imageLinks.smallThumbnail}
-                            shelf="currentlyReading"
-                            authors={book.authors}
+                            book={book}
+                            onShelfChange={this.handleShelfChange}
                           />
                         ))}
                     </ol>
@@ -87,10 +88,8 @@ class BooksApp extends React.Component {
                         .map(book => (
                           <Book
                             key={book.id}
-                            title={book.title}
-                            image={book.imageLinks.smallThumbnail}
-                            shelf="wantToRead"
-                            authors={book.authors}
+                            book={book}
+                            onShelfChange={this.handleShelfChange}
                           />
                         ))}
                     </ol>
@@ -103,10 +102,8 @@ class BooksApp extends React.Component {
                       {books.filter(book => book.shelf === "read").map(book => (
                         <Book
                           key={book.id}
-                          title={book.title}
-                          image={book.imageLinks.smallThumbnail}
-                          shelf="read"
-                          authors={book.authors}
+                          book={book}
+                          onShelfChange={this.handleShelfChange}
                         />
                       ))}
                     </ol>
