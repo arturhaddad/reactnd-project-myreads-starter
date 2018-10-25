@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react";
 import * as BooksAPI from "../../BooksAPI";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { Loading } from "./styles";
 import BookItem from "../BookItem";
 
 export default class BookList extends Component {
@@ -39,9 +40,9 @@ export default class BookList extends Component {
     return (
       <div className="list-books-content">
         {loading ? (
-          <div>
+          <Loading>
             <FontAwesomeIcon className="fa-spin" icon={faSpinner} />
-          </div>
+          </Loading>
         ) : (
           <div>
             {this.shelfs.map(shelf => (
