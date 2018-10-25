@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from "react";
 import * as BooksAPI from "../../BooksAPI";
+import sortBy from "sort-by";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { Loading } from "./styles";
@@ -55,6 +56,7 @@ export default class BookList extends Component {
                       <Fragment>
                         {books
                           .filter(book => book.shelf === shelf.slug)
+                          .sort(sortBy("title"))
                           .map(book => (
                             <BookItem
                               key={book.id}
