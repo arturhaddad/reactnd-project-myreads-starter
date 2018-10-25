@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import * as BooksAPI from "../../BooksAPI";
 import BookItem from "../BookItem";
 
@@ -41,13 +41,22 @@ export default class BookList extends Component {
               <h2 className="bookshelf-title">{shelf.name}</h2>
               <div className="bookshelf-books">
                 <ol className="books-grid">
-                  {books.filter(book => book.shelf === shelf.slug).map(book => (
-                    <BookItem
-                      key={book.id}
-                      book={book}
-                      onShelfChange={this.handleShelfChange}
-                    />
-                  ))}
+                  {books.filter(book => book.shelf === shelf.slug).length >
+                  0 ? (
+                    <Fragment>
+                      {books
+                        .filter(book => book.shelf === shelf.slug)
+                        .map(book => (
+                          <BookItem
+                            key={book.id}
+                            book={book}
+                            onShelfChange={this.handleShelfChange}
+                          />
+                        ))}
+                    </Fragment>
+                  ) : (
+                    <li>This shelf is empty.</li>
+                  )}
                 </ol>
               </div>
             </div>
