@@ -1,34 +1,12 @@
 import React from "react";
-import * as BooksAPI from "./BooksAPI";
 import "./App.css";
 
-import BookItem from "./components/BookItem";
+import BookList from "./components/BookList";
 
 class BooksApp extends React.Component {
-  state = {
-    books: []
-  };
-
-  loadBooks = () => {
-    BooksAPI.getAll().then(books => this.setState({ books }));
-  };
-
-  handleShelfChange = (book, shelf) => {
-    BooksAPI.update(book, shelf).then(() => {
-      book.shelf = shelf;
-      this.setState(state => ({
-        books: state.books.filter(b => b.id !== book.id).concat(book)
-      }));
-    });
-  };
-
-  componentDidMount() {
-    this.loadBooks();
-  }
+  state = {};
 
   render() {
-    const { books } = this.state;
-
     return (
       <div className="app">
         {this.state.showSearchPage ? (
@@ -61,56 +39,7 @@ class BooksApp extends React.Component {
             <div className="list-books-title">
               <h1>MyReads</h1>
             </div>
-            <div className="list-books-content">
-              <div>
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Currently Reading</h2>
-                  <div className="bookshelf-books">
-                    <ol className="books-grid">
-                      {books
-                        .filter(book => book.shelf === "currentlyReading")
-                        .map(book => (
-                          <BookItem
-                            key={book.id}
-                            book={book}
-                            onShelfChange={this.handleShelfChange}
-                          />
-                        ))}
-                    </ol>
-                  </div>
-                </div>
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Want to Read</h2>
-                  <div className="bookshelf-books">
-                    <ol className="books-grid">
-                      {books
-                        .filter(book => book.shelf === "wantToRead")
-                        .map(book => (
-                          <BookItem
-                            key={book.id}
-                            book={book}
-                            onShelfChange={this.handleShelfChange}
-                          />
-                        ))}
-                    </ol>
-                  </div>
-                </div>
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Read</h2>
-                  <div className="bookshelf-books">
-                    <ol className="books-grid">
-                      {books.filter(book => book.shelf === "read").map(book => (
-                        <BookItem
-                          key={book.id}
-                          book={book}
-                          onShelfChange={this.handleShelfChange}
-                        />
-                      ))}
-                    </ol>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <BookList />
             <div className="open-search">
               <a onClick={() => this.setState({ showSearchPage: true })}>
                 Add a book
