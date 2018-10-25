@@ -2,6 +2,7 @@ import React from "react";
 import "./App.css";
 
 import BookList from "./components/BookList";
+import Header from "./components/Header";
 
 class BooksApp extends React.Component {
   state = {};
@@ -36,9 +37,7 @@ class BooksApp extends React.Component {
           </div>
         ) : (
           <div className="list-books">
-            <div className="list-books-title">
-              <h1>MyReads</h1>
-            </div>
+            <Header />
             <BookList />
             <div className="open-search">
               <a onClick={() => this.setState({ showSearchPage: true })}>

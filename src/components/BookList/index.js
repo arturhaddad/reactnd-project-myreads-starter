@@ -4,11 +4,12 @@ import BookItem from "../BookItem";
 
 export default class BookList extends Component {
   state = {
-    books: []
+    books: [],
+    loading: true
   };
 
   loadBooks = () => {
-    BooksAPI.getAll().then(books => this.setState({ books }));
+    BooksAPI.getAll().then(books => this.setState({ books, loading: false }));
   };
 
   handleShelfChange = (book, shelf) => {
@@ -31,37 +32,41 @@ export default class BookList extends Component {
   ];
 
   render() {
-    const { books } = this.state;
+    const { books, loading } = this.state;
 
     return (
       <div className="list-books-content">
-        <div>
-          {this.shelfs.map(shelf => (
-            <div className="bookshelf">
-              <h2 className="bookshelf-title">{shelf.name}</h2>
-              <div className="bookshelf-books">
-                <ol className="books-grid">
-                  {books.filter(book => book.shelf === shelf.slug).length >
-                  0 ? (
-                    <Fragment>
-                      {books
-                        .filter(book => book.shelf === shelf.slug)
-                        .map(book => (
-                          <BookItem
-                            key={book.id}
-                            book={book}
-                            onShelfChange={this.handleShelfChange}
-                          />
-                        ))}
-                    </Fragment>
-                  ) : (
-                    <li>This shelf is empty.</li>
-                  )}
-                </ol>
+        {loading ? (
+          <h2>Loading...</h2>
+        ) : (
+          <div>
+            {this.shelfs.map(shelf => (
+              <div className="bookshelf">
+                <h2 className="bookshelf-title">{shelf.name}</h2>
+                <div className="bookshelf-books">
+                  <ol className="books-grid">
+                    {books.filter(book => book.shelf === shelf.slug).length >
+                    0 ? (
+                      <Fragment>
+                        {books
+                          .filter(book => book.shelf === shelf.slug)
+                          .map(book => (
+                            <BookItem
+                              key={book.id}
+                              book={book}
+                              onShelfChange={this.handleShelfChange}
+                            />
+                          ))}
+                      </Fragment>
+                    ) : (
+                      <li>This shelf is empty.</li>
+                    )}
+                  </ol>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     );
   }
