@@ -1,6 +1,6 @@
 import React from "react";
 
-const Book = ({ book, onShelfChange }) => (
+const BookItem = ({ book, onShelfChange }) => (
   <li>
     <div className="book">
       <div className="book-top">
@@ -33,4 +33,4 @@ const Book = ({ book, onShelfChange }) => (
   </li>
 );
 
-export default Book;
+export default BookItem;

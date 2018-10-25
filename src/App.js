@@ -2,11 +2,11 @@ import React from "react";
 import * as BooksAPI from "./BooksAPI";
 import "./App.css";
 
-import Book from "./components/Book";
+import BookItem from "./components/BookItem";
 
 class BooksApp extends React.Component {
   state = {
-    books: [],
+    books: []
   };
 
   loadBooks = () => {
@@ -70,7 +70,7 @@ class BooksApp extends React.Component {
                       {books
                         .filter(book => book.shelf === "currentlyReading")
                         .map(book => (
-                          <Book
+                          <BookItem
                             key={book.id}
                             book={book}
                             onShelfChange={this.handleShelfChange}
@@ -86,7 +86,7 @@ class BooksApp extends React.Component {
                       {books
                         .filter(book => book.shelf === "wantToRead")
                         .map(book => (
-                          <Book
+                          <BookItem
                             key={book.id}
                             book={book}
                             onShelfChange={this.handleShelfChange}
@@ -100,7 +100,7 @@ class BooksApp extends React.Component {
                   <div className="bookshelf-books">
                     <ol className="books-grid">
                       {books.filter(book => book.shelf === "read").map(book => (
-                        <Book
+                        <BookItem
                           key={book.id}
                           book={book}
                           onShelfChange={this.handleShelfChange}
