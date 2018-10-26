@@ -1,16 +1,16 @@
 import React from "react";
+import Default from "../../assets/default-book.png";
+import { Book } from "./styles";
 
 const BookItem = ({ book, onShelfChange }) => (
-  <li>
+  <Book>
     <div className="book">
       <div className="book-top">
         <div
-          className="book-cover"
+          className={`book-cover empty-thumbnail-${!book.imageLinks}`}
           style={{
-            width: 128,
-            height: 188,
             backgroundImage: `url(${
-              book.imageLinks ? book.imageLinks.smallThumbnail : ""
+              book.imageLinks ? book.imageLinks.thumbnail : Default
             })`
           }}
         />
@@ -34,7 +34,7 @@ const BookItem = ({ book, onShelfChange }) => (
         <div className="book-authors">{book.authors.join(", ")}</div>
       )}
     </div>
-  </li>
+  </Book>
 );
 
 export default BookItem;
