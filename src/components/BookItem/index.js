@@ -9,7 +9,9 @@ const BookItem = ({ book, onShelfChange }) => (
           style={{
             width: 128,
             height: 188,
-            backgroundImage: `url(${book.imageLinks.smallThumbnail})`
+            backgroundImage: `url(${
+              book.imageLinks ? book.imageLinks.smallThumbnail : ""
+            })`
           }}
         />
         <div className="book-shelf-changer">

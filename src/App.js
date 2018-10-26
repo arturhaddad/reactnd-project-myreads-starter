@@ -65,7 +65,6 @@ export default class BooksApp extends Component {
           render={() => (
             <Search
               books={books}
-              loadingBooks={loadingBooks}
               loadingMove={loadingMove}
               onShelfChange={this.handleShelfChange}
             />
