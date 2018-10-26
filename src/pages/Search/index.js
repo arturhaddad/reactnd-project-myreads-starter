@@ -11,6 +11,8 @@ export default class Search extends Component {
   };
 
   handleTermChange = e => {
+    const { books } = this.props;
+
     this.setState({ searchTerm: e.target.value, loading: true }, () => {
       if (this.searchTimeout) {
         window.clearTimeout(this.searchTimeout);
@@ -19,8 +21,13 @@ export default class Search extends Component {
       if (this.state.searchTerm.length > 0) {
         this.searchTimeout = setTimeout(() => {
           BooksAPI.search(this.state.searchTerm).then(searchResults => {
-            this.setState({ searchResults, loading: false });
-            console.log(searchResults);
+            const formatedResults = searchResults.map(book => ({
+              ...book,
+              shelf: books.find(b => b.id === book.id)
+                ? books.find(b => b.id === book.id).shelf
+                : "none"
+            }));
+            this.setState({ searchResults: formatedResults, loading: false });
           });
         }, 700);
       }
@@ -29,6 +36,7 @@ export default class Search extends Component {
 
   render() {
     const { searchTerm, searchResults, loading } = this.state;
+    const { onShelfChange } = this.props;
 
     return (
       <div className="search-books">
@@ -52,7 +60,11 @@ export default class Search extends Component {
                 <Fragment>
                   {searchResults.length > 0 ? (
                     searchResults.map(book => (
-                      <BookItem key={book.id} book={book} />
+                      <BookItem
+                        key={book.id}
+                        book={book}
+                        onShelfChange={onShelfChange}
+                      />
                     ))
                   ) : (
                     <li>
