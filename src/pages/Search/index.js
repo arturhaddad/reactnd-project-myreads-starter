@@ -1,10 +1,32 @@
 import React, { Component } from "react";
+import * as BooksAPI from "../../BooksAPI";
 import { Link } from "react-router-dom";
+import BookItem from "../../components/BookItem";
 
 export default class Search extends Component {
-  state = {};
+  state = {
+    searchTerm: "",
+    searchResults: []
+  };
+
+  handleTermChange = e => {
+    this.setState({ searchTerm: e.target.value }, () => {
+      if (this.searchTimeout) {
+        window.clearTimeout(this.searchTimeout);
+      }
+
+      this.searchTimeout = setTimeout(() => {
+        BooksAPI.search(this.state.searchTerm).then(searchResults => {
+          this.setState({ searchResults });
+          console.log(searchResults);
+        });
+      }, 700);
+    });
+  };
 
   render() {
+    const { searchTerm, searchResults } = this.state;
+
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -12,19 +34,19 @@ export default class Search extends Component {
             Close
           </Link>
           <div className="search-books-input-wrapper">
-            {/*
-              NOTES: The search from BooksAPI is limited to a particular set of search terms.
-              You can find these search terms here:
-              https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
-
-              However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-              you don't find a specific author or title. Every search is limited by search terms.
-            */}
-            <input type="text" placeholder="Search by title or author" />
+            <input
+              value={searchTerm}
+              onChange={e => this.handleTermChange(e)}
+              type="text"
+              placeholder="Search by title or author"
+            />
           </div>
         </div>
         <div className="search-books-results">
-          <ol className="books-grid" />
+          <ol className="books-grid">
+            {searchResults.length > 0 &&
+              searchResults.map(book => <BookItem key={book.id} book={book} />)}
+          </ol>
         </div>
       </div>
     );
