@@ -6,6 +6,7 @@ import "./App.css";
 import { Link } from "react-router-dom";
 import Header from "./components/Header";
 import BookList from "./components/BookList";
+import LoadingMove from "./components/LoadingMove";
 import Search from "./pages/Search";
 
 export default class BooksApp extends Component {
@@ -41,6 +42,7 @@ export default class BooksApp extends Component {
 
     return (
       <div className="app">
+        {loadingMove && <LoadingMove />}
         <Route
           exact
           path="/"

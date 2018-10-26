@@ -2,9 +2,8 @@ import React, { Fragment } from "react";
 import sortBy from "sort-by";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
-import { Loading, LoadingMove } from "./styles";
+import { Loading } from "./styles";
 import BookItem from "../BookItem";
-import Reading from "../../assets/reading.gif";
 
 const shelfs = [
   { name: "Currently Reading", slug: "currentlyReading" },
@@ -12,15 +11,8 @@ const shelfs = [
   { name: "Read", slug: "read" }
 ];
 
-const BookList = ({ books, loadingBooks, loadingMove, onShelfChange }) => (
+const BookList = ({ books, loadingBooks, onShelfChange }) => (
   <div>
-    {loadingMove && (
-      <LoadingMove>
-        <figure>
-          <img src={Reading} alt="Loading book move" />
-        </figure>
-      </LoadingMove>
-    )}
     <div className="list-books-content">
       {loadingBooks ? (
         <Loading>

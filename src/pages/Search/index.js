@@ -14,20 +14,27 @@ export default class Search extends Component {
     const { books } = this.props;
 
     this.setState({ searchTerm: e.target.value, loading: true }, () => {
+      console.log(this.state.searchTerm);
       if (this.searchTimeout) {
         window.clearTimeout(this.searchTimeout);
+        console.log("timeout apagado");
       }
 
       if (this.state.searchTerm.length > 0) {
         this.searchTimeout = setTimeout(() => {
           BooksAPI.search(this.state.searchTerm).then(searchResults => {
-            const formatedResults = searchResults.map(book => ({
-              ...book,
-              shelf: books.find(b => b.id === book.id)
-                ? books.find(b => b.id === book.id).shelf
-                : "none"
-            }));
-            this.setState({ searchResults: formatedResults, loading: false });
+            if (searchResults.length > 0) {
+              const formatedResults = searchResults.map(book => ({
+                ...book,
+                shelf: books.find(b => b.id === book.id)
+                  ? books.find(b => b.id === book.id).shelf
+                  : "none"
+              }));
+              this.setState({ searchResults: formatedResults });
+            } else {
+              this.setState({ searchResults });
+            }
+            this.setState({ loading: false });
           });
         }, 700);
       }
